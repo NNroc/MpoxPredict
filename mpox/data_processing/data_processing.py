@@ -21,7 +21,6 @@ save_name_new_cases_week = '../mpox_data/mpox_global_new_cases_week.csv'
 save_name_new_deaths_week = '../mpox_data/mpox_global_new_deaths_week.csv'
 
 all_data = dict()
-
 global_time_series = dict()
 
 # 空数据的填充格式
