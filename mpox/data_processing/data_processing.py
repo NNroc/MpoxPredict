@@ -2,42 +2,23 @@ import pandas as pd
 import datetime as dt
 import csv
 import os
+from mpox.entity.entity import Records, Country
 
+filename = '../owid-monkeypox-data.csv'
 
-class Country:
-    def __init__(self, country_name):
-        self.country_name = country_name
-        self.records = dict()
-
-
-class Records:
-    def __init__(self, date, total_cases, total_deaths, new_cases, new_deaths):
-        self.date = date
-        self.total_cases = total_cases
-        self.total_deaths = total_deaths
-        self.new_cases = new_cases
-        self.new_deaths = new_deaths
-
-    def __repr__(self):
-        return f'<date:{self.date}, total_cases: {self.total_cases}, total_deaths: {self.total_deaths}, ' \
-               f'new_cases: {self.new_cases}, new_deaths: {self.new_deaths}>'
-
-
-filename = 'owid-monkeypox-data.csv'
-
-dir_name = 'mpox_data'
+dir_name = '../mpox_data'
 if not os.path.isdir(dir_name):
     os.makedirs(dir_name)
 
-save_name_total_cases = 'mpox_data/mpox_global_total_cases.csv'
-save_name_total_deaths = 'mpox_data/mpox_global_total_deaths.csv'
-save_name_new_cases = 'mpox_data/mpox_global_new_cases.csv'
-save_name_new_deaths = 'mpox_data/mpox_global_new_deaths.csv'
+save_name_total_cases = '../mpox_data/mpox_global_total_cases.csv'
+save_name_total_deaths = '../mpox_data/mpox_global_total_deaths.csv'
+save_name_new_cases = '../mpox_data/mpox_global_new_cases.csv'
+save_name_new_deaths = '../mpox_data/mpox_global_new_deaths.csv'
 
-save_name_total_cases_week = 'mpox_data/mpox_global_total_cases_week.csv'
-save_name_total_deaths_week = 'mpox_data/mpox_global_total_deaths_week.csv'
-save_name_new_cases_week = 'mpox_data/mpox_global_new_cases_week.csv'
-save_name_new_deaths_week = 'mpox_data/mpox_global_new_deaths_week.csv'
+save_name_total_cases_week = '../mpox_data/mpox_global_total_cases_week.csv'
+save_name_total_deaths_week = '../mpox_data/mpox_global_total_deaths_week.csv'
+save_name_new_cases_week = '../mpox_data/mpox_global_new_cases_week.csv'
+save_name_new_deaths_week = '../mpox_data/mpox_global_new_deaths_week.csv'
 
 all_data = dict()
 
