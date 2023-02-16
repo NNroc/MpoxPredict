@@ -51,8 +51,7 @@ with open(filename, 'r', encoding='GBK') as fp:
                 all_country[use.country_name] = use
             all_country_name.append(x['location'])
             use = Country(x['location'])
-        use.records[x['date']] = Records(x['date'],
-                                         x['total_cases'], x['total_deaths'],
+        use.records[x['date']] = Records(x['date'], x['total_cases'], x['total_deaths'],
                                          x['new_cases'], x['new_deaths'])
 
 if use is not None:

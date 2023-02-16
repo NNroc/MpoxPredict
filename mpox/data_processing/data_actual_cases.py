@@ -7,16 +7,18 @@ import os
 from mpox.entity.entity import Records, Country
 
 
-# 猴痘实时患病人数(具有传染性) =  n 周 total_cases - n 周 new_deaths - (n - 2) 周 new_cases + (n + 1) 周 new_cases
+# 猴痘实时患病人数(具有传染性) =  (n 周 total_cases - n 周 new_deaths - (n - 2) 周 new_cases + (n + 1) 周 new_cases) * 0.935
 
 def read_csv(filepath: str, encoding='GBK'):
-    file_data = []
+    file_data = {}
     with open(filepath, 'r', encoding=encoding) as fp:
         reader = csv.DictReader(fp)
-        use = None
-        for x in reader:
-            print(x)
-
+        for country_name in reader.fieldnames:
+            all_country_name.append(country_name)
+            file_data[country_name] = []
+        for row in reader:
+            for col in row:
+                file_data[col].append(row[col])
     return file_data
 
 
