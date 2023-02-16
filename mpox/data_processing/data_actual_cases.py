@@ -37,11 +37,10 @@ def get_actual_case(total_cases, total_deaths, new_cases, new_deaths):
             if len(actual_cases_data['']) < rg - 3:
                 actual_cases_data[''].append(total_cases[''][i])
             # 猴痘实时患病人数(具有传染性)
-            # (n 周 total_cases - n 周 new_deaths - (n - 2) 周 new_cases + (n + 1) 周 new_cases) * 0.935
-            # todo 公式存在问题
+            # (n 周 total_cases - n 周 total_deaths - (n - 2) 周 total_cases + (n + 1) 周 new_cases) * 0.935
             actual_cases_week_num = (float(total_cases[country][i])
-                                     - float(new_deaths[country][i])
-                                     - float(new_cases[country][i - 2])
+                                     - float(total_deaths[country][i])
+                                     - float(total_cases[country][i - 2])
                                      + float(new_cases[country][i + 1])) * 0.935
             actual_cases_week_num = int(actual_cases_week_num)
             actual_cases_week_num = str(actual_cases_week_num)
