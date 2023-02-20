@@ -13,9 +13,10 @@ def read_csv(filepath: str, encoding='GBK'):
     file_data = {}
     with open(filepath, 'r', encoding=encoding) as fp:
         reader = csv.DictReader(fp)
-        for country_name in reader.fieldnames:
-            all_country_name.append(country_name)
-            file_data[country_name] = []
+        for country in reader.fieldnames:
+            if country not in all_country_name:
+                all_country_name.append(country)
+            file_data[country] = []
         for row in reader:
             for col in row:
                 file_data[col].append(row[col])
@@ -81,3 +82,30 @@ with open(mpox_global_actual_cases_week, 'w', encoding='utf-8') as f:
                 continue
             data_str = data_str + ',' + actual_cases_week[country_name][row]
         f.writelines(data_str + '\n')
+
+# 峰值最小值
+peak = 10
+# 计算峰值的总和
+peak_value_sum = 0
+# 计算峰值的数量
+peak_num = 0
+peak_value = 0
+have_peak = 0
+# 获取峰值及次数
+for country in all_country_name:
+    if country == '' or country == 'World':
+        continue
+    l = len(new_cases_week[country])
+
+    for i in range(l):
+        if int(new_cases_week[country][i]) >= peak:
+            have_peak = 1
+            peak_value = max(peak_value, int(new_cases_week[country][i]))
+    if have_peak:
+        peak_num += 1
+        peak_value_sum += peak_value
+    peak_value = 0
+    have_peak = 0
+
+print('peak_num: ', peak_num)
+print('peak_value_sum: ', peak_value_sum)
