@@ -7,7 +7,10 @@ import os
 from mpox.entity.entity import Records, Country
 
 
-# 猴痘实时患病人数(具有传染性) =  (n 周 total_cases - n 周 new_deaths - (n - 2) 周 new_cases + (n + 1) 周 new_cases) * 0.935
+# 无症状感染者 0.102
+# 不住院率 0.935
+# 猴痘实时患病人数(具有传染性) =  (n 周 total_cases - n 周 new_deaths - (n - 2) 周 new_cases + (n + 1) 周 new_cases)
+# * ((1 - 0.102) * 0.935 + 0.102)
 
 def read_csv(filepath: str, encoding='GBK'):
     file_data = {}
@@ -42,7 +45,7 @@ def get_actual_case(total_cases, total_deaths, new_cases, new_deaths):
             actual_cases_week_num = (float(total_cases[country][i])
                                      - float(total_deaths[country][i])
                                      - float(total_cases[country][i - 2])
-                                     + float(new_cases[country][i + 1])) * 0.935
+                                     + float(new_cases[country][i + 1])) * ((1 - 0.102) * 0.935 + 0.102)
             actual_cases_week_num = int(actual_cases_week_num)
             actual_cases_week_num = str(actual_cases_week_num)
             actual_cases_data[country].append(actual_cases_week_num)
