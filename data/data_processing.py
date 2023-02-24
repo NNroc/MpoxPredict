@@ -16,7 +16,7 @@ all_date_series = []
 data_flight = dict()
 
 # 获取 xlsx
-df1 = pd.read_excel(data_flight_filename, sheet_name='Sheet1')
+df1 = pd.read_excel(data_flight_filename, sheet_name='Sheet1', keep_default_na=False)
 data = df1.values
 for row in data:
     if row[0] not in all_date_series:
@@ -42,7 +42,7 @@ data_flight_filename = ''
 data_flight_save_filename = 'data_flight.csv'
 
 # 读取sheet列表的元素
-df = pd.read_excel(data_city_size_filename, sheet_name='all')
+df = pd.read_excel(data_city_size_filename, sheet_name='all', keep_default_na=False)
 data = df.values
 for row in data:
     if row[1][-1] == '市':
@@ -125,3 +125,6 @@ with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
             + str(statistical_data.mileage_total_city) + ','
             + str(statistical_data.bus_passenger) + ','
             + str(statistical_data.highway_passenger) + '\n')
+
+# 数据汇总
+data_save_filename = 'data.csv'

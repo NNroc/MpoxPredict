@@ -46,3 +46,6 @@ class Statistical:
         self.bus_passenger = bus_passenger
         # 公路客运量 (万人)
         self.highway_passenger = highway_passenger
+
+    def merge(self):
+        self
