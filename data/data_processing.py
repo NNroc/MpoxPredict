@@ -72,40 +72,30 @@ print(city_not_have)
 # 筛选出的城市统计数据
 all_statistical_data = []
 # 筛选出的城市统计数据保存地址
-statistical_data_save_filename = 'city_statistical.csv'
+statistical_data_save_filename = 'data_city_statistical.csv'
 # 城市统计数据
-for year in range(2001, 2022):
-    statistical_data_path = '中国城市统计年鉴2001—2021年/中国城市统计年鉴_' + str(year) + '年/中国城市统计年鉴_' + str(
-        year) + '年(Excel版本)/地级市（及以上城市）统计资料（' + str(year) + '年）.xlsx'
-    print(statistical_data_path)
-    statistical_data_df = pd.read_excel(statistical_data_path, sheet_name='Sheet1')
-    statistical_data = statistical_data_df.values
-    for row in range(4, len(statistical_data)):
-        if statistical_data[row][0] == '市':
-            statistical_data[row][0] = statistical_data[row][0][:-1]
-        if statistical_data[row][0] not in all_city_name:
-            continue
-        # 2001~2017的数据格式与2018~2021的数据格式不一样
-        statistical = None
-        if year < 2018:
-            statistical = Statistical(year, statistical_data[row][0], statistical_data[row][4],
-                                      statistical_data[row][9], statistical_data[row][11], statistical_data[row][12],
-                                      statistical_data[row][13], statistical_data[row][14], statistical_data[row][15],
-                                      statistical_data[row][16], statistical_data[row][21], statistical_data[row][96],
-                                      statistical_data[row][97], statistical_data[row][98], statistical_data[row][99],
-                                      statistical_data[row][100], statistical_data[row][101],
-                                      statistical_data[row][104], statistical_data[row][110],
-                                      statistical_data[row][113], statistical_data[row][115])
-        else:
-            statistical = Statistical(year, statistical_data[row][0], statistical_data[row][5],
-                                      statistical_data[row][9], statistical_data[row][11], statistical_data[row][12],
-                                      statistical_data[row][13], statistical_data[row][14], statistical_data[row][15],
-                                      statistical_data[row][16], statistical_data[row][21], statistical_data[row][96],
-                                      statistical_data[row][97], statistical_data[row][98], statistical_data[row][99],
-                                      statistical_data[row][100], statistical_data[row][101],
-                                      statistical_data[row][104], statistical_data[row][110],
-                                      statistical_data[row][113], statistical_data[row][115])
-        all_statistical_data.append(statistical)
+statistical_data_path = '地级市（及以上城市）统计资料（2021年）.xlsx'
+statistical_data_df = pd.read_excel(statistical_data_path, sheet_name='Sheet1', keep_default_na=False)
+# 将空值赋值为，这个有问题用不了
+# statistical_data_df.fillna('暂无')
+statistical_data = statistical_data_df.values
+for row in range(5, len(statistical_data)):
+    statistical_data[row][0] = statistical_data[row][0].strip()
+    if statistical_data[row][0][-1] == '市':
+        statistical_data[row][0] = statistical_data[row][0][:-1]
+    if statistical_data[row][0] not in all_city_name:
+        # print(statistical_data[row][0])
+        continue
+    # 各年的数据格式不一样，暂用2021年发布的
+    statistical = Statistical(2021, statistical_data[row][0], statistical_data[row][5],
+                              statistical_data[row][9], statistical_data[row][11], statistical_data[row][12],
+                              statistical_data[row][13], statistical_data[row][14], statistical_data[row][15],
+                              statistical_data[row][16], statistical_data[row][21], statistical_data[row][96],
+                              statistical_data[row][97], statistical_data[row][98], statistical_data[row][99],
+                              statistical_data[row][100], statistical_data[row][101],
+                              statistical_data[row][104], statistical_data[row][110],
+                              statistical_data[row][113], statistical_data[row][115])
+    all_statistical_data.append(statistical)
 
 with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
     f.writelines(
@@ -114,14 +104,24 @@ with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
         '境内公路总里程(公里)全市,全年公共汽(电)车客运总量(万人次),公路客运量(万人)\n')
     for statistical_data in all_statistical_data:
         f.writelines(
-            str(statistical_data.year) + str(statistical_data.city) + str(statistical_data.population_total_city) + str(
-                statistical_data.area_living) + str(statistical_data.area_parks_green) +
-            str(statistical_data.green_covered_area) + str(statistical_data.industrial_particulate_emission) + str(
-                statistical_data.sulphur_dioxide_emission) +
-            str(statistical_data.nitrogen_dioxide_emission) + str(statistical_data.pm25) + str(
-                statistical_data.capita_grp_total_city) + str(statistical_data.hospitals_total_city) + str(
-                statistical_data.hospitals_districts_city) + str(statistical_data.hospitals_beds_total_city) + str(
-                statistical_data.hospitals_beds_districts_city) + str(statistical_data.doctors_total_city) + str(
-                statistical_data.doctors_districts_city) + str(
-                statistical_data.basic_medical_care_system_total_city) + str(statistical_data.mileage_total_city) + str(
-                statistical_data.bus_passenger) + str(statistical_data.highway_passenger) + '\n')
+            str(statistical_data.year) + ','
+            + str(statistical_data.city) + ','
+            + str(statistical_data.population_total_city) + ','
+            + str(statistical_data.area_living) + ','
+            + str(statistical_data.area_parks_green) + ','
+            + str(statistical_data.green_covered_area) + ','
+            + str(statistical_data.industrial_particulate_emission) + ','
+            + str(statistical_data.sulphur_dioxide_emission) + ','
+            + str(statistical_data.nitrogen_dioxide_emission) + ','
+            + str(statistical_data.pm25) + ','
+            + str(statistical_data.capita_grp_total_city) + ','
+            + str(statistical_data.hospitals_total_city) + ','
+            + str(statistical_data.hospitals_districts_city) + ','
+            + str(statistical_data.hospitals_beds_total_city) + ','
+            + str(statistical_data.hospitals_beds_districts_city) + ','
+            + str(statistical_data.doctors_total_city) + ','
+            + str(statistical_data.doctors_districts_city) + ','
+            + str(statistical_data.basic_medical_care_system_total_city) + ','
+            + str(statistical_data.mileage_total_city) + ','
+            + str(statistical_data.bus_passenger) + ','
+            + str(statistical_data.highway_passenger) + '\n')
