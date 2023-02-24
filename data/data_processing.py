@@ -52,7 +52,7 @@ for row in data:
         data_city_size[row[1]] = [row[19], row[31]]
         city_not_have.remove(row[1])
 
-# 保存航班文件,xlsx操作更方便......
+# 保存航班文件
 # with open(data_flight_save_filename, 'w', encoding='gbk') as f:
 #     other_city=''
 #     f.writelines('date,到达国家,国内外航司'+other_city+'\n')
@@ -128,3 +128,37 @@ with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
 
 # 数据汇总
 data_save_filename = 'data.csv'
+for s in all_statistical_data:
+    s.merge(data_city_size[s.city][0], data_city_size[s.city][1])
+
+with open(data_save_filename, 'w', encoding='gbk') as f:
+    f.writelines(
+        '年份,城市,城镇常住人口(市辖区),居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
+        '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
+        '境内公路总里程(公里)全市,全年公共汽(电)车客运总量(万人次),公路客运量(万人),高中及以上比例(%),年龄60以上比例(%)\n')
+    for statistical_data in all_statistical_data:
+        f.writelines(
+            str(statistical_data.year) + ','
+            + str(statistical_data.city) + ','
+            + str(statistical_data.population_total_city) + ','
+            + str(statistical_data.area_living) + ','
+            + str(statistical_data.area_parks_green) + ','
+            + str(statistical_data.green_covered_area) + ','
+            + str(statistical_data.industrial_particulate_emission) + ','
+            + str(statistical_data.sulphur_dioxide_emission) + ','
+            + str(statistical_data.nitrogen_dioxide_emission) + ','
+            + str(statistical_data.pm25) + ','
+            + str(statistical_data.capita_grp_total_city) + ','
+            + str(statistical_data.hospitals_total_city) + ','
+            + str(statistical_data.hospitals_districts_city) + ','
+            + str(statistical_data.hospitals_beds_total_city) + ','
+            + str(statistical_data.hospitals_beds_districts_city) + ','
+            + str(statistical_data.doctors_total_city) + ','
+            + str(statistical_data.doctors_districts_city) + ','
+            + str(statistical_data.basic_medical_care_system_total_city) + ','
+            + str(statistical_data.mileage_total_city) + ','
+            + str(statistical_data.bus_passenger) + ','
+            + str(statistical_data.highway_passenger) + ','
+            + str(statistical_data.high_school_above) + ','
+            + str(statistical_data.age60)
+            + '\n')

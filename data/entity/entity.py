@@ -47,5 +47,12 @@ class Statistical:
         # 公路客运量 (万人)
         self.highway_passenger = highway_passenger
 
-    def merge(self):
-        self
+        # 下列数据需进行合并
+        # 学历高中及以上比例
+        self.high_school_above = ''
+        # 年龄60以上比例
+        self.age60 = ''
+
+    def merge(self, high_school_above, age60):
+        self.high_school_above = high_school_above
+        self.age60 = age60
