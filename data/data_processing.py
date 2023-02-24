@@ -30,12 +30,16 @@ all_city_name.sort()
 
 # 筛选城市规模信息
 data_city_size_filename = '城市规模参数.xlsx'
-# 保存文件
-data_city_size_save_filename = 'city_size.csv'
+# 城市规模参数保存文件
+data_city_size_save_filename = 'data_city_size.csv'
 # 最终的筛选结果
 data_city_size = dict()
 # 未筛查到的城市
 city_not_have = list.copy(all_city_name)
+# 航班信息
+data_flight_filename = ''
+# 航班信息保存文件
+data_flight_save_filename = 'data_flight.csv'
 
 # 读取sheet列表的元素
 df = pd.read_excel(data_city_size_filename, sheet_name='all')
@@ -81,7 +85,7 @@ for year in range(2001, 2022):
             statistical_data[row][0] = statistical_data[row][0][:-1]
         if statistical_data[row][0] not in all_city_name:
             continue
-        # 18年之前的需减一
+        # 2001~2017的数据格式与2018~2021的数据格式不一样
         statistical = None
         if year < 2018:
             statistical = Statistical(year, statistical_data[row][0], statistical_data[row][4],
