@@ -54,7 +54,7 @@ for row in data:
 
 # 保存航班文件
 # with open(data_flight_save_filename, 'w', encoding='gbk') as f:
-#     other_city=''
+#     other_city = ''
 #     f.writelines('date,到达国家,国内外航司'+other_city+'\n')
 #     for row in data_flight:
 #         f.writelines(row + ',中国,' + str(data_flight[row][0]) + ',' + str(data_flight[row][1]) + '\n')
