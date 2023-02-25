@@ -1,3 +1,6 @@
+from data.utils.grey import grey_predict
+
+
 class Statistical:
     def __init__(self, year, city, population_total_city, area_living, area_parks_green, green_covered_area,
                  industrial_particulate_emission, sulphur_dioxide_emission, nitrogen_dioxide_emission, pm25,
@@ -56,3 +59,19 @@ class Statistical:
     def merge(self, high_school_above, age60):
         self.high_school_above = high_school_above
         self.age60 = age60
+
+
+class Homosexuality:
+    def __init__(self, city, year_start, year_num, predict_num):
+        self.city = city
+        self.year_start = int(year_start)
+        self.year_num = int(year_num)
+        self.data = [-1 for _ in range(year_num)]
+        self.predict_num = int(predict_num)
+
+    def add(self, data, year):
+        self.data[year - self.year_start] = data
+
+    def predict(self):
+        data_predict = grey_predict(self.data, self.predict_num)
+        self.data.extend(data_predict)

@@ -3,14 +3,19 @@ import math
 
 
 def grey_predict(history_data: list, predict_num: int):
+    '''
+    :param history_data: åŸå§‹åºåˆ—
+    :param predict_num: éœ€è¦é¢„æµ‹çš„é•¿åº¦
+    :return:
+    '''
     n = len(history_data)
     X0 = np.array(history_data)
 
-    # ÀÛ¼ÓÉú³É
+    # ç´¯åŠ ç”Ÿæˆ
     history_data_agg = [sum(history_data[0:i + 1]) for i in range(n)]
     X1 = np.array(history_data_agg)
 
-    # ¼ÆËãÊı¾İ¾ØÕóBºÍÊı¾İÏòÁ¿Y
+    # è®¡ç®—æ•°æ®çŸ©é˜µBå’Œæ•°æ®å‘é‡Y
     B = np.zeros([n - 1, 2])
     Y = np.zeros([n - 1, 1])
     for i in range(0, n - 1):
@@ -18,46 +23,46 @@ def grey_predict(history_data: list, predict_num: int):
         B[i][1] = 1
         Y[i][0] = X0[i + 1]
 
-    # ¼ÆËãGM(1,1)Î¢·Ö·½³ÌµÄ²ÎÊıaºÍu
+    # è®¡ç®—GM(1,1)å¾®åˆ†æ–¹ç¨‹çš„å‚æ•°aå’Œu
     # A = np.zeros([2,1])
     A = np.linalg.inv(B.T.dot(B)).dot(B.T).dot(Y)
     a = A[0][0]
     u = A[1][0]
 
-    # ½¨Á¢»ÒÉ«Ô¤²âÄ£ĞÍ
+    # å»ºç«‹ç°è‰²é¢„æµ‹æ¨¡å‹
     XX0 = np.zeros(n)
     XX0[0] = X0[0]
     for i in range(1, n):
         XX0[i] = (X0[0] - u / a) * (1 - math.exp(a)) * math.exp(-a * (i))
 
-    # Ä£ĞÍ¾«¶ÈµÄºóÑé²î¼ìÑé
-    e = 0  # Çó²Ğ²îÆ½¾ùÖµ
+    # æ¨¡å‹ç²¾åº¦çš„åéªŒå·®æ£€éªŒ
+    e = 0  # æ±‚æ®‹å·®å¹³å‡å€¼
     for i in range(0, n):
         e += (X0[i] - XX0[i])
     e /= n
 
-    # ÇóÀúÊ·Êı¾İÆ½¾ùÖµ
+    # æ±‚å†å²æ•°æ®å¹³å‡å€¼
     aver = 0
     for i in range(0, n):
         aver += X0[i]
     aver /= n
 
-    # ÇóÀúÊ·Êı¾İ·½²î
+    # æ±‚å†å²æ•°æ®æ–¹å·®
     s12 = 0
     for i in range(0, n):
         s12 += (X0[i] - aver) ** 2
     s12 /= n
 
-    # Çó²Ğ²î·½²î
+    # æ±‚æ®‹å·®æ–¹å·®
     s22 = 0
     for i in range(0, n):
         s22 += ((X0[i] - XX0[i]) - e) ** 2
     s22 /= n
 
-    # ÇóºóÑé²î±ÈÖµ
+    # æ±‚åéªŒå·®æ¯”å€¼
     C = s22 / s12
 
-    # ÇóĞ¡Îó²î¸ÅÂÊ
+    # æ±‚å°è¯¯å·®æ¦‚ç‡
     cout = 0
     for i in range(0, n):
         if abs((X0[i] - XX0[i]) - e) < 0.6754 * math.sqrt(s12):
@@ -65,14 +70,14 @@ def grey_predict(history_data: list, predict_num: int):
         else:
             cout = cout
     P = cout / n
-    # ·µ»ØµÄÔ¤²âĞòÁĞ
+    # è¿”å›çš„é¢„æµ‹åºåˆ—
     f = np.zeros(predict_num)
     if (C < 0.35 and P > 0.95):
-        # Ô¤²â¾«¶ÈÎªÒ»¼¶
-        # print('Íùºópredict_num¸÷Äê¸ººÉÎª£º')
+        # é¢„æµ‹ç²¾åº¦ä¸ºä¸€çº§
+        # print('å¾€åpredict_numå„å¹´è´Ÿè·ä¸ºï¼š')
         f = np.zeros(predict_num)
         for i in range(0, predict_num):
             f[i] = (X0[0] - u / a) * (1 - math.exp(a)) * math.exp(-a * (i + n))
     else:
-        print('»ÒÉ«Ô¤²â·¨²»ÊÊÓÃ')
+        print('ç°è‰²é¢„æµ‹æ³•ä¸é€‚ç”¨')
     return f
