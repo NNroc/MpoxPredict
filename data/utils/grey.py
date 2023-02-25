@@ -72,12 +72,16 @@ def grey_predict(history_data: list, predict_num: int):
     P = cout / n
     # 返回的预测序列
     f = np.zeros(predict_num)
-    if (C < 0.35 and P > 0.95):
-        # 预测精度为一级
-        # print('往后predict_num各年负荷为：')
-        f = np.zeros(predict_num)
-        for i in range(0, predict_num):
-            f[i] = (X0[0] - u / a) * (1 - math.exp(a)) * math.exp(-a * (i + n))
-    else:
-        print('灰色预测法不适用')
+
+    f = np.zeros(predict_num)
+    for i in range(0, predict_num):
+        f[i] = (X0[0] - u / a) * (1 - math.exp(a)) * math.exp(-a * (i + n))
+    # if (C < 0.35 and P > 0.75):
+    #     # 预测精度为一级
+    #     # print('往后predict_num各年负荷为：')
+    #     f = np.zeros(predict_num)
+    #     for i in range(0, predict_num):
+    #         f[i] = (X0[0] - u / a) * (1 - math.exp(a)) * math.exp(-a * (i + n))
+    # else:
+    #     print('灰色预测法不适用')
     return f

@@ -146,7 +146,20 @@ for i in range(1, year_num):
 for city in all_homosexuality_data:
     all_homosexuality_data[city].predict()
 
-print()
+# 保存目录
+data_homosexuality_save_filename = 'data_homosexuality.csv'
+# 保存预测结果
+with open(data_homosexuality_save_filename, 'w', encoding='gbk') as f:
+    city_str = ''
+    for city in all_homosexuality_data:
+        city_str = city_str + ',' + city
+    f.writelines('date' + city_str + '' + '\n')
+    for i in range(1, year_num + 11):
+        year = i + int(homosexuality_df[1][0]) - 1
+        f.writelines(str(year))
+        for city in all_homosexuality_data:
+            f.writelines(',' + str(int(all_homosexuality_data[city].data[i - 1])))
+        f.writelines('\n')
 #
 #
 #
