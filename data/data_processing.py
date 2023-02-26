@@ -135,10 +135,12 @@ all_homosexuality_data = dict()
 year_num = len(homosexuality_df)
 # 城市数，索引从1开始
 city_num = len(homosexuality_df[0])
+# 往后预测的年数
+predict_num = 7
 # 将所有城市初始化 todo 这里可能要除去不要的城市
 for i in range(1, city_num):
     all_homosexuality_data[homosexuality_df[0][i]] = Homosexuality(homosexuality_df[0][i],
-                                                                   homosexuality_df[1][0], year_num - 1, 11)
+                                                                   homosexuality_df[1][0], year_num - 1, predict_num)
 for i in range(1, year_num):
     for j in range(1, city_num):
         all_homosexuality_data[homosexuality_df[0][j]].add(homosexuality_df[i][j], int(homosexuality_df[i][0]))
@@ -154,7 +156,7 @@ with open(data_homosexuality_save_filename, 'w', encoding='gbk') as f:
     for city in all_homosexuality_data:
         city_str = city_str + ',' + city
     f.writelines('date' + city_str + '' + '\n')
-    for i in range(1, year_num + 11):
+    for i in range(1, year_num + predict_num):
         year = i + int(homosexuality_df[1][0]) - 1
         f.writelines(str(year))
         for city in all_homosexuality_data:
