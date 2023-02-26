@@ -73,7 +73,6 @@ def grey_predict(history_data: list, predict_num: int):
     # 返回的预测序列
     f = np.zeros(predict_num)
 
-    f = np.zeros(predict_num)
     for i in range(0, predict_num):
         f[i] = (X0[0] - u / a) * (1 - math.exp(a)) * math.exp(-a * (i + n))
     # if (C < 0.35 and P > 0.75):
