@@ -136,7 +136,7 @@ year_num = len(homosexuality_df)
 # 城市数，索引从1开始
 city_num = len(homosexuality_df[0])
 # 往后预测的年数
-predict_num = 7
+predict_num = 8
 # 将所有城市初始化
 for i in range(1, city_num):
     # 除去不要的城市
