@@ -139,10 +139,16 @@ city_num = len(homosexuality_df[0])
 predict_num = 7
 # 将所有城市初始化 todo 这里可能要除去不要的城市
 for i in range(1, city_num):
+    # 除去不要的城市
+    if homosexuality_df[0][i] not in all_city_name:
+        continue
     all_homosexuality_data[homosexuality_df[0][i]] = Homosexuality(homosexuality_df[0][i],
                                                                    homosexuality_df[1][0], year_num - 1, predict_num)
 for i in range(1, year_num):
     for j in range(1, city_num):
+        # 除去不要的城市
+        if homosexuality_df[0][i] not in all_city_name:
+            continue
         all_homosexuality_data[homosexuality_df[0][j]].add(homosexuality_df[i][j], int(homosexuality_df[i][0]))
 
 for city in all_homosexuality_data:
