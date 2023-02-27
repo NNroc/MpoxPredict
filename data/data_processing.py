@@ -1,6 +1,6 @@
 import pandas as pd
-from data.entity.entity import Statistical, Homosexuality
-from data.utils.grey import grey_predict
+from data.entity.Statistical import Statistical
+from data.entity.Homosexuality import Homosexuality
 
 data_flight_filename = '../data_original/20230221 数据整理(军事医学研究院).xlsx'
 data_flight_save_filename = 'data_flight.csv'
@@ -168,46 +168,45 @@ with open(data_homosexuality_save_filename, 'w', encoding='gbk') as f:
         for city in all_homosexuality_data:
             f.writelines(',' + str(int(all_homosexuality_data[city].data[i - 1])))
         f.writelines('\n')
-#
-#
-#
-#
-#
-#
-# todo 先注释掉
+
 # 数据汇总
-# data_save_filename = 'data.csv'
-# for s in all_statistical_data:
-#     s.merge(data_city_size[s.city][0], data_city_size[s.city][1])
-#
-# with open(data_save_filename, 'w', encoding='gbk') as f:
-#     f.writelines(
-#         '年份,城市,城镇常住人口(市辖区),居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
-#         '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
-#         '境内公路总里程(公里)全市,全年公共汽(电)车客运总量(万人次),公路客运量(万人),高中及以上比例(%),年龄60以上比例(%)\n')
-#     for statistical_data in all_statistical_data:
-#         f.writelines(
-#             str(statistical_data.year) + ','
-#             + str(statistical_data.city) + ','
-#             + str(statistical_data.population_total_city) + ','
-#             + str(statistical_data.area_living) + ','
-#             + str(statistical_data.area_parks_green) + ','
-#             + str(statistical_data.green_covered_area) + ','
-#             + str(statistical_data.industrial_particulate_emission) + ','
-#             + str(statistical_data.sulphur_dioxide_emission) + ','
-#             + str(statistical_data.nitrogen_dioxide_emission) + ','
-#             + str(statistical_data.pm25) + ','
-#             + str(statistical_data.capita_grp_total_city) + ','
-#             + str(statistical_data.hospitals_total_city) + ','
-#             + str(statistical_data.hospitals_districts_city) + ','
-#             + str(statistical_data.hospitals_beds_total_city) + ','
-#             + str(statistical_data.hospitals_beds_districts_city) + ','
-#             + str(statistical_data.doctors_total_city) + ','
-#             + str(statistical_data.doctors_districts_city) + ','
-#             + str(statistical_data.basic_medical_care_system_total_city) + ','
-#             + str(statistical_data.mileage_total_city) + ','
-#             + str(statistical_data.bus_passenger) + ','
-#             + str(statistical_data.highway_passenger) + ','
-#             + str(statistical_data.high_school_above) + ','
-#             + str(statistical_data.age60)
-#             + '\n')
+data_save_filename = 'data.csv'
+for s in all_statistical_data:
+    s.merge_people_message(data_city_size[s.city][0], data_city_size[s.city][1])
+    for city in all_homosexuality_data:
+        if city == s.city:
+            s.merge_homosexuality(all_homosexuality_data[city], 2022)
+            break
+
+with open(data_save_filename, 'w', encoding='gbk') as f:
+    f.writelines(
+        '年份,城市,城镇常住人口(市辖区),居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
+        '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
+        '境内公路总里程(公里)全市,全年公共汽(电)车客运总量(万人次),公路客运量(万人),高中及以上比例(%),年龄60以上比例(%),同性恋人数\n')
+    for statistical_data in all_statistical_data:
+        f.writelines(
+            str(statistical_data.year) + ','
+            + str(statistical_data.city) + ','
+            + str(statistical_data.population_total_city) + ','
+            + str(statistical_data.area_living) + ','
+            + str(statistical_data.area_parks_green) + ','
+            + str(statistical_data.green_covered_area) + ','
+            + str(statistical_data.industrial_particulate_emission) + ','
+            + str(statistical_data.sulphur_dioxide_emission) + ','
+            + str(statistical_data.nitrogen_dioxide_emission) + ','
+            + str(statistical_data.pm25) + ','
+            + str(statistical_data.capita_grp_total_city) + ','
+            + str(statistical_data.hospitals_total_city) + ','
+            + str(statistical_data.hospitals_districts_city) + ','
+            + str(statistical_data.hospitals_beds_total_city) + ','
+            + str(statistical_data.hospitals_beds_districts_city) + ','
+            + str(statistical_data.doctors_total_city) + ','
+            + str(statistical_data.doctors_districts_city) + ','
+            + str(statistical_data.basic_medical_care_system_total_city) + ','
+            + str(statistical_data.mileage_total_city) + ','
+            + str(statistical_data.bus_passenger) + ','
+            + str(statistical_data.highway_passenger) + ','
+            + str(statistical_data.high_school_above) + ','
+            + str(statistical_data.age60) + ','
+            + str(int(statistical_data.homosexuality))
+            + '\n')
