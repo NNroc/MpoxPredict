@@ -147,7 +147,7 @@ for i in range(1, city_num):
 for i in range(1, year_num):
     for j in range(1, city_num):
         # 除去不要的城市
-        if homosexuality_df[0][i] not in all_city_name:
+        if homosexuality_df[0][j] not in all_city_name:
             continue
         all_homosexuality_data[homosexuality_df[0][j]].add(homosexuality_df[i][j], int(homosexuality_df[i][0]))
 
