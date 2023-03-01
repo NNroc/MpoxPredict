@@ -89,11 +89,11 @@ for row in range(5, len(statistical_data)):
     statistical = Statistical(2021, statistical_data[row][0], statistical_data[row][5],
                               statistical_data[row][9], statistical_data[row][11], statistical_data[row][12],
                               statistical_data[row][13], statistical_data[row][14], statistical_data[row][15],
-                              statistical_data[row][16], statistical_data[row][21], statistical_data[row][96],
-                              statistical_data[row][97], statistical_data[row][98], statistical_data[row][99],
-                              statistical_data[row][100], statistical_data[row][101],
-                              statistical_data[row][104], statistical_data[row][110],
-                              statistical_data[row][113], statistical_data[row][115])
+                              statistical_data[row][16], statistical_data[row][21], statistical_data[row][100],
+                              statistical_data[row][101], statistical_data[row][102], statistical_data[row][103],
+                              statistical_data[row][104], statistical_data[row][105], statistical_data[row][108],
+                              statistical_data[row][114], statistical_data[row][116], statistical_data[row][117],
+                              statistical_data[row][118], statistical_data[row][119])
     all_statistical_data.append(statistical)
 
 with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
@@ -122,7 +122,9 @@ with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
             + str(statistical_data.doctors_districts_city) + ','
             + str(statistical_data.basic_medical_care_system_total_city) + ','
             + str(statistical_data.mileage_total_city) + ','
+            + str(statistical_data.bus_num) + ','
             + str(statistical_data.bus_passenger) + ','
+            + str(statistical_data.taxi_num) + ','
             + str(statistical_data.highway_passenger) + '\n')
 
 # 预测同性恋数据，已有2007到2011，预测到2021
@@ -204,7 +206,9 @@ with open(data_save_filename, 'w', encoding='gbk') as f:
             + str(statistical_data.doctors_districts_city) + ','
             + str(statistical_data.basic_medical_care_system_total_city) + ','
             + str(statistical_data.mileage_total_city) + ','
+            + str(statistical_data.bus_num) + ','
             + str(statistical_data.bus_passenger) + ','
+            + str(statistical_data.taxi_num) + ','
             + str(statistical_data.highway_passenger) + ','
             + str(statistical_data.high_school_above) + ','
             + str(statistical_data.age60) + ','

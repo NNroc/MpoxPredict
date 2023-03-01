@@ -4,9 +4,10 @@ from data.entity.Homosexuality import Homosexuality
 class Statistical:
     def __init__(self, year, city, population_total_city, area_living, area_parks_green, green_covered_area,
                  industrial_particulate_emission, sulphur_dioxide_emission, nitrogen_dioxide_emission, pm25,
-                 capita_grp_total_city, hospitals_total_city, hospitals_districts_city,
-                 hospitals_beds_total_city, hospitals_beds_districts_city, doctors_total_city, doctors_districts_city,
-                 basic_medical_care_system_total_city, mileage_total_city, bus_passenger, highway_passenger):
+                 capita_grp_total_city, hospitals_total_city, hospitals_districts_city, hospitals_beds_total_city,
+                 hospitals_beds_districts_city, doctors_total_city, doctors_districts_city,
+                 basic_medical_care_system_total_city, mileage_total_city, bus_num, bus_passenger, taxi_num,
+                 highway_passenger):
         # 年份
         self.year = year
         # 城市
@@ -45,8 +46,12 @@ class Statistical:
         self.basic_medical_care_system_total_city = basic_medical_care_system_total_city
         # 境内公路总里程 (公里) 全市
         self.mileage_total_city = mileage_total_city
+        # 年末实有公共汽（电）车营运车辆数（辆）
+        self.bus_num = bus_num
         # 全年公共汽(电)车客运总量 (万人次)
         self.bus_passenger = bus_passenger
+        # 年末实有巡游出租汽车营运车数（辆）
+        self.taxi_num = taxi_num
         # 公路客运量 (万人)
         self.highway_passenger = highway_passenger
 
