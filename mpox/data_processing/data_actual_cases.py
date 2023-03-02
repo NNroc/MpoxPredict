@@ -1,10 +1,7 @@
 '''实时患病人数'''
 
-import pandas as pd
-import datetime as dt
 import csv
-import os
-from mpox.entity.entity import Records, Country
+import math
 
 
 # 无症状感染者 0.102
@@ -46,7 +43,7 @@ def get_actual_case(total_cases, total_deaths, new_cases, new_deaths):
                                      - float(total_deaths[country][i])
                                      - float(total_cases[country][i - 2])
                                      + float(new_cases[country][i + 1])) * ((1 - 0.102) * 0.935 + 0.102)
-            actual_cases_week_num = int(actual_cases_week_num)
+            actual_cases_week_num = math.ceil(actual_cases_week_num)
             actual_cases_week_num = str(actual_cases_week_num)
             actual_cases_data[country].append(actual_cases_week_num)
     return actual_cases_data

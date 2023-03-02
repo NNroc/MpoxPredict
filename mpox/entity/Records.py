@@ -1,10 +1,3 @@
-
-class Country:
-    def __init__(self, country_name):
-        self.country_name = country_name
-        self.records = dict()
-
-
 class Records:
     def __init__(self, date, total_cases, total_deaths, new_cases, new_deaths):
         self.date = date

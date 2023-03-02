@@ -2,7 +2,8 @@ import pandas as pd
 import datetime as dt
 import csv
 import os
-from mpox.entity.entity import Records, Country
+from mpox.entity.Country import Country
+from mpox.entity.Records import Records
 
 filename = '../owid-monkeypox-data.csv'
 
@@ -29,7 +30,7 @@ fill = '0'
 
 # 起止日期
 start_date = dt.date(2022, 5, 9)
-end_data = dt.date(2023, 2, 26)
+end_data = dt.date(2023, 2, 25)
 delta = dt.timedelta(days=1)
 date = start_date
 # 所有的日期
@@ -52,7 +53,7 @@ with open(filename, 'r', encoding='GBK') as fp:
             all_country_name.append(x['location'])
             use = Country(x['location'])
         use.records[x['date']] = Records(x['date'], x['total_cases'], x['total_deaths'],
-                                         x['new_cases'], x['new_deaths'])
+                                         x['new_cases_smoothed'], x['new_deaths_smoothed'])
 
 if use is not None:
     all_country[use.country_name] = use
