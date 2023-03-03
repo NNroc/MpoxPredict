@@ -9,6 +9,13 @@ import math
 # 猴痘实时患病人数(具有传染性) =  (n 周 total_cases - n 周 new_deaths - (n - 2) 周 new_cases + (n + 1) 周 new_cases)
 # * ((1 - 0.102) * 0.935 + 0.102)
 
+def del_0(num: int):
+    if num > 0:
+        return num
+    else:
+        return 0
+
+
 def read_csv(filepath: str, encoding='GBK'):
     file_data = {}
     with open(filepath, 'r', encoding=encoding) as fp:
@@ -80,7 +87,7 @@ with open(mpox_global_actual_cases_week, 'w', encoding='utf-8') as f:
         for country_name in all_country_name:
             if country_name == '':
                 continue
-            data_str = data_str + ',' + actual_cases_week[country_name][row]
+            data_str = data_str + ',' + str(del_0(int(actual_cases_week[country_name][row])))
         f.writelines(data_str + '\n')
 
 # 峰值最小值
