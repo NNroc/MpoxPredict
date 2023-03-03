@@ -1,4 +1,4 @@
-'''实时患病人数'''
+# 生成实时患病人数
 
 import csv
 import math
