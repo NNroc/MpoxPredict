@@ -90,29 +90,29 @@ with open(mpox_global_actual_cases_week, 'w', encoding='utf-8') as f:
             data_str = data_str + ',' + str(del_0(int(actual_cases_week[country_name][row])))
         f.writelines(data_str + '\n')
 
-# 峰值最小值
-peak = 10
-# 计算峰值的总和
-peak_value_sum = 0
-# 计算峰值的数量
-peak_num = 0
-peak_value = 0
-have_peak = 0
-# 获取峰值及次数
-for country in all_country_name:
-    if country == '' or country == 'World':
-        continue
-    l = len(new_cases_week[country])
-
-    for i in range(l):
-        if int(new_cases_week[country][i]) >= peak:
-            have_peak = 1
-            peak_value = max(peak_value, int(new_cases_week[country][i]))
-    if have_peak:
-        peak_num += 1
-        peak_value_sum += peak_value
-    peak_value = 0
-    have_peak = 0
-
-print('peak_num: ', peak_num)
-print('peak_value_sum: ', peak_value_sum)
+# # 峰值最小值 不再使用
+# peak = 10
+# # 计算峰值的总和
+# peak_value_sum = 0
+# # 计算峰值的数量
+# peak_num = 0
+# peak_value = 0
+# have_peak = 0
+# # 获取峰值及次数
+# for country in all_country_name:
+#     if country == '' or country == 'World':
+#         continue
+#     l = len(new_cases_week[country])
+#
+#     for i in range(l):
+#         if int(new_cases_week[country][i]) >= peak:
+#             have_peak = 1
+#             peak_value = max(peak_value, int(new_cases_week[country][i]))
+#     if have_peak:
+#         peak_num += 1
+#         peak_value_sum += peak_value
+#     peak_value = 0
+#     have_peak = 0
+#
+# print('peak_num: ', peak_num)
+# print('peak_value_sum: ', peak_value_sum)
