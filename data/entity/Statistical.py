@@ -2,10 +2,10 @@ from data.entity.Homosexuality import Homosexuality
 
 
 class Statistical:
-    def __init__(self, year, city, population_total_city, area_living, area_parks_green, green_covered_area,
-                 industrial_particulate_emission, sulphur_dioxide_emission, nitrogen_dioxide_emission, pm25,
-                 capita_grp_total_city, hospitals_total_city, hospitals_districts_city, hospitals_beds_total_city,
-                 hospitals_beds_districts_city, doctors_total_city, doctors_districts_city,
+    def __init__(self, year, city, population_total_city, built_up_total_city, area_living, area_parks_green,
+                 green_covered_area, industrial_particulate_emission, sulphur_dioxide_emission,
+                 nitrogen_dioxide_emission, pm25, capita_grp_total_city, hospitals_total_city, hospitals_districts_city,
+                 hospitals_beds_total_city, hospitals_beds_districts_city, doctors_total_city, doctors_districts_city,
                  basic_medical_care_system_total_city, mileage_total_city, bus_num, bus_passenger, taxi_num,
                  highway_passenger):
         # 年份
@@ -14,6 +14,8 @@ class Statistical:
         self.city = city
         # 城镇常住人口(市辖区)
         self.population_total_city = population_total_city
+        # 建成区面积（平方公里）市辖区
+        self.built_up_total_city = built_up_total_city
         # 居住用地面积
         self.area_living = area_living
         # 公园绿地面积

@@ -86,7 +86,7 @@ for row in range(5, len(statistical_data)):
         # print(statistical_data[row][0])
         continue
     # 各年的数据格式不一样，暂用2021年发布的
-    statistical = Statistical(2021, statistical_data[row][0], statistical_data[row][5],
+    statistical = Statistical(2021, statistical_data[row][0], statistical_data[row][5], statistical_data[row][6],
                               statistical_data[row][9], statistical_data[row][11], statistical_data[row][12],
                               statistical_data[row][13], statistical_data[row][14], statistical_data[row][15],
                               statistical_data[row][16], statistical_data[row][21], statistical_data[row][100],
@@ -95,37 +95,6 @@ for row in range(5, len(statistical_data)):
                               statistical_data[row][114], statistical_data[row][116], statistical_data[row][117],
                               statistical_data[row][118], statistical_data[row][119])
     all_statistical_data.append(statistical)
-
-with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
-    f.writelines(
-        '年份,城市,城镇常住人口(市辖区),居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
-        '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
-        '境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人)\n')
-    for statistical_data in all_statistical_data:
-        f.writelines(
-            str(statistical_data.year) + ','
-            + str(statistical_data.city) + ','
-            + str(statistical_data.population_total_city) + ','
-            + str(statistical_data.area_living) + ','
-            + str(statistical_data.area_parks_green) + ','
-            + str(statistical_data.green_covered_area) + ','
-            + str(statistical_data.industrial_particulate_emission) + ','
-            + str(statistical_data.sulphur_dioxide_emission) + ','
-            + str(statistical_data.nitrogen_dioxide_emission) + ','
-            + str(statistical_data.pm25) + ','
-            + str(statistical_data.capita_grp_total_city) + ','
-            + str(statistical_data.hospitals_total_city) + ','
-            + str(statistical_data.hospitals_districts_city) + ','
-            + str(statistical_data.hospitals_beds_total_city) + ','
-            + str(statistical_data.hospitals_beds_districts_city) + ','
-            + str(statistical_data.doctors_total_city) + ','
-            + str(statistical_data.doctors_districts_city) + ','
-            + str(statistical_data.basic_medical_care_system_total_city) + ','
-            + str(statistical_data.mileage_total_city) + ','
-            + str(statistical_data.bus_num) + ','
-            + str(statistical_data.bus_passenger) + ','
-            + str(statistical_data.taxi_num) + ','
-            + str(statistical_data.highway_passenger) + '\n')
 
 # 预测同性恋数据，已有2007到2011，预测到2021
 homosexuality_filename = '../data_original/中国城市同性恋数据.xlsx'
@@ -182,7 +151,7 @@ for s in all_statistical_data:
 
 with open(data_save_filename, 'w', encoding='gbk') as f:
     f.writelines(
-        '年份,城市,城镇常住人口(市辖区),居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
+        '年份,城市,城镇常住人口(市辖区),建成区面积（平方公里）市辖区,居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
         '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
         '境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人),高中及以上比例(%),年龄60以上比例(%),同性恋人数\n')
     for statistical_data in all_statistical_data:
@@ -190,6 +159,7 @@ with open(data_save_filename, 'w', encoding='gbk') as f:
             str(statistical_data.year) + ','
             + str(statistical_data.city) + ','
             + str(statistical_data.population_total_city) + ','
+            + str(statistical_data.built_up_total_city) + ','
             + str(statistical_data.area_living) + ','
             + str(statistical_data.area_parks_green) + ','
             + str(statistical_data.green_covered_area) + ','
@@ -214,3 +184,34 @@ with open(data_save_filename, 'w', encoding='gbk') as f:
             + str(statistical_data.age60) + ','
             + str(int(statistical_data.homosexuality))
             + '\n')
+
+# with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
+#     f.writelines(
+#         '年份,城市,城镇常住人口(市辖区),居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
+#         '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
+#         '境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人)\n')
+#     for statistical_data in all_statistical_data:
+#         f.writelines(
+#             str(statistical_data.year) + ','
+#             + str(statistical_data.city) + ','
+#             + str(statistical_data.population_total_city) + ','
+#             + str(statistical_data.area_living) + ','
+#             + str(statistical_data.area_parks_green) + ','
+#             + str(statistical_data.green_covered_area) + ','
+#             + str(statistical_data.industrial_particulate_emission) + ','
+#             + str(statistical_data.sulphur_dioxide_emission) + ','
+#             + str(statistical_data.nitrogen_dioxide_emission) + ','
+#             + str(statistical_data.pm25) + ','
+#             + str(statistical_data.capita_grp_total_city) + ','
+#             + str(statistical_data.hospitals_total_city) + ','
+#             + str(statistical_data.hospitals_districts_city) + ','
+#             + str(statistical_data.hospitals_beds_total_city) + ','
+#             + str(statistical_data.hospitals_beds_districts_city) + ','
+#             + str(statistical_data.doctors_total_city) + ','
+#             + str(statistical_data.doctors_districts_city) + ','
+#             + str(statistical_data.basic_medical_care_system_total_city) + ','
+#             + str(statistical_data.mileage_total_city) + ','
+#             + str(statistical_data.bus_num) + ','
+#             + str(statistical_data.bus_passenger) + ','
+#             + str(statistical_data.taxi_num) + ','
+#             + str(statistical_data.highway_passenger) + '\n')
