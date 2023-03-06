@@ -65,8 +65,10 @@ class Statistical:
         # 同性恋人数
         self.homosexuality = -1
 
-    def merge_people_message(self, high_school_above, age60):
+    def merge_people_message(self, high_school_above, age0_19, age20_39, age60):
         self.high_school_above = high_school_above
+        self.age0_19 = age0_19
+        self.age20_39 = age20_39
         self.age60 = age60
 
     def merge_homosexuality(self, homosexuality: Homosexuality, year: int):

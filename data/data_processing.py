@@ -45,8 +45,8 @@ for row in data:
     if row[1][-1] == '市':
         row[1] = row[1][:-1]
     if row[1] in all_city_name:
-        # [Proportion of high school and above, age60]
-        data_city_size[row[1]] = [row[19], row[31]]
+        # [Proportion of high school and above, age0_19, age20_39, age60]
+        data_city_size[row[1]] = [row[19], row[28], row[29], row[31]]
         city_not_have.remove(row[1])
 
 # 保存航班文件
@@ -58,9 +58,10 @@ for row in data:
 
 # 保存筛选过的城市规模参数文件
 with open(data_city_size_save_filename, 'w', encoding='gbk') as f:
-    f.writelines('city,Proportion of high school and above,age60\n')
+    f.writelines('city,Proportion of high school and above,age0_19,age20_39,age60\n')
     for row in data_city_size:
-        f.writelines(row + ',' + str(data_city_size[row][0]) + ',' + str(data_city_size[row][1]) + '\n')
+        f.writelines(row + ',' + str(data_city_size[row][0]) + ',' + str(data_city_size[row][1]) + ',' + str(
+            data_city_size[row][2]) + ',' + str(data_city_size[row][3]) + '\n')
 
 # 去除特殊城市
 for i in city_not_have:
@@ -143,7 +144,8 @@ with open(data_homosexuality_save_filename, 'w', encoding='gbk') as f:
 # 数据汇总
 data_save_filename = 'data.csv'
 for s in all_statistical_data:
-    s.merge_people_message(data_city_size[s.city][0], data_city_size[s.city][1])
+    s.merge_people_message(data_city_size[s.city][0], data_city_size[s.city][1], data_city_size[s.city][2],
+                           data_city_size[s.city][3])
     for city in all_homosexuality_data:
         if city == s.city:
             s.merge_homosexuality(all_homosexuality_data[city], 2022)
@@ -153,7 +155,7 @@ with open(data_save_filename, 'w', encoding='gbk') as f:
     f.writelines(
         '年份,城市,城镇常住人口(市辖区),建成区面积（平方公里）市辖区,居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
         '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
-        '境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人),高中及以上比例(%),年龄60以上比例(%),同性恋人数\n')
+        '境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人),高中及以上比例(%),年龄0到19比例(%),年龄20到39比例(%),年龄60以上比例(%),同性恋人数\n')
     for statistical_data in all_statistical_data:
         f.writelines(
             str(statistical_data.year) + ','
@@ -181,6 +183,8 @@ with open(data_save_filename, 'w', encoding='gbk') as f:
             + str(statistical_data.taxi_num) + ','
             + str(statistical_data.highway_passenger) + ','
             + str(statistical_data.high_school_above) + ','
+            + str(statistical_data.age0_19) + ','
+            + str(statistical_data.age20_39) + ','
             + str(statistical_data.age60) + ','
             + str(int(statistical_data.homosexuality))
             + '\n')
