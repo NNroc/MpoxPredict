@@ -1,6 +1,14 @@
 import pandas as pd
+import os
 from data.entity.Statistical import Statistical
 from data.entity.Homosexuality import Homosexuality
+
+
+# os.listdir()方法获取文件夹名字，返回数组
+def getAllFiles(targetDir):
+    listFiles = os.listdir(targetDir)
+    return listFiles
+
 
 data_flight_filename = '../data_original/20230221 数据整理(军事医学研究院).xlsx'
 data_flight_save_filename = 'data_flight.csv'
@@ -151,11 +159,54 @@ for s in all_statistical_data:
             s.merge_homosexuality(all_homosexuality_data[city], 2022)
             break
 
+# 增加气温数据
+data_temperature_filename = '../data_original/2000-2020年分市逐年气温'
+files = getAllFiles(data_temperature_filename)
+for file in files:
+    # 年份	省份	城市	城市代码	平均气温
+    data_temperature_df = pd.read_excel(data_temperature_filename + '/' + file, sheet_name=0, keep_default_na=False)
+    data_temperature_df = data_temperature_df.values
+    for year, province, city, city_code, temperature in data_temperature_df:
+        if year != 2020:
+            continue
+        if city[-1] == '市':
+            city = city[:-1]
+        for sta in all_statistical_data:
+            if sta.city == city:
+                sta.merge_temperature(temperature)
+                break
+
+# 增加降水量数据
+data_water_filename = '../data_original/1980年～2020年中国各城市降水量数据.xlsx'
+data_water_df = pd.read_excel(data_water_filename, sheet_name=0, keep_default_na=False)
+data_water_df = data_water_df.values
+for year, province, province_code, city, city_code, water in data_water_df:
+    if year != 2020:
+        continue
+    if city[-1] == '市':
+        city = city[:-1]
+    for sta in all_statistical_data:
+        if sta.city == city:
+            sta.merge_water(water)
+            break
+
+# 增加日照数据
+data_sun_filename = '../data_original/2000-2020年372个城市年度日照时数.xlsx'
+data_sun_df = pd.read_excel(data_sun_filename, sheet_name=0, keep_default_na=False)
+data_sun_df = data_sun_df.values
+for year, province_code, province, city_code, city, sun in data_sun_df:
+    if year != 2020:
+        continue
+    if city[-1] == '市':
+        city = city[:-1]
+    for sta in all_statistical_data:
+        if sta.city == city:
+            sta.merge_sun(sun)
+            break
+
 with open(data_save_filename, 'w', encoding='gbk') as f:
     f.writelines(
-        '年份,城市,城镇常住人口(市辖区),建成区面积（平方公里）市辖区,居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
-        '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
-        '境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人),高中及以上比例(%),年龄0到19比例(%),年龄20到39比例(%),年龄60以上比例(%),同性恋人数\n')
+        '年份,城市,城镇常住人口(市辖区),建成区面积（平方公里）市辖区,居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人),高中及以上比例(%),年龄0到19比例(%),年龄20到39比例(%),年龄60以上比例(%),同性恋人数,城市降水量数据,城市年度日照时数,城市逐年气温\n')
     for statistical_data in all_statistical_data:
         f.writelines(
             str(statistical_data.year) + ','
@@ -186,36 +237,8 @@ with open(data_save_filename, 'w', encoding='gbk') as f:
             + str(statistical_data.age0_19) + ','
             + str(statistical_data.age20_39) + ','
             + str(statistical_data.age60) + ','
-            + str(int(statistical_data.homosexuality))
+            + str(int(statistical_data.homosexuality)) + ','
+            + str(statistical_data.water) + ','
+            + str(statistical_data.sun) + ','
+            + str(statistical_data.temperature)
             + '\n')
-
-# with open(statistical_data_save_filename, 'w', encoding='gbk') as f:
-#     f.writelines(
-#         '年份,城市,城镇常住人口(市辖区),居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),'
-#         '人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,'
-#         '境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人)\n')
-#     for statistical_data in all_statistical_data:
-#         f.writelines(
-#             str(statistical_data.year) + ','
-#             + str(statistical_data.city) + ','
-#             + str(statistical_data.population_total_city) + ','
-#             + str(statistical_data.area_living) + ','
-#             + str(statistical_data.area_parks_green) + ','
-#             + str(statistical_data.green_covered_area) + ','
-#             + str(statistical_data.industrial_particulate_emission) + ','
-#             + str(statistical_data.sulphur_dioxide_emission) + ','
-#             + str(statistical_data.nitrogen_dioxide_emission) + ','
-#             + str(statistical_data.pm25) + ','
-#             + str(statistical_data.capita_grp_total_city) + ','
-#             + str(statistical_data.hospitals_total_city) + ','
-#             + str(statistical_data.hospitals_districts_city) + ','
-#             + str(statistical_data.hospitals_beds_total_city) + ','
-#             + str(statistical_data.hospitals_beds_districts_city) + ','
-#             + str(statistical_data.doctors_total_city) + ','
-#             + str(statistical_data.doctors_districts_city) + ','
-#             + str(statistical_data.basic_medical_care_system_total_city) + ','
-#             + str(statistical_data.mileage_total_city) + ','
-#             + str(statistical_data.bus_num) + ','
-#             + str(statistical_data.bus_passenger) + ','
-#             + str(statistical_data.taxi_num) + ','
-#             + str(statistical_data.highway_passenger) + '\n')

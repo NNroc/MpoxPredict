@@ -64,6 +64,12 @@ class Statistical:
         self.age60 = ''
         # 同性恋人数
         self.homosexuality = -1
+        # 增加降水量数据
+        self.water = -99.99
+        # 增加日照数据
+        self.sun = -99.99
+        # 增加气温数据
+        self.temperature = -99.99
 
     def merge_people_message(self, high_school_above, age0_19, age20_39, age60):
         self.high_school_above = high_school_above
@@ -73,3 +79,15 @@ class Statistical:
 
     def merge_homosexuality(self, homosexuality: Homosexuality, year: int):
         self.homosexuality = homosexuality.data[year - homosexuality.year_start]
+
+    def merge_water(self, water: float):
+        # 增加降水量数据
+        self.water = water
+
+    def merge_sun(self, sun: float):
+        # 增加日照数据
+        self.sun = sun
+
+    def merge_temperature(self, temperature: float):
+        # 增加气温数据
+        self.temperature = temperature
