@@ -70,6 +70,10 @@ class Statistical:
         self.sun = -99.99
         # 增加气温数据
         self.temperature = -99.99
+        # 累计确诊 累计治愈 累计死亡
+        self.case = -1
+        self.cure = -1
+        self.die = -1
 
     def merge_people_message(self, high_school_above, age0_19, age20_39, age60):
         self.high_school_above = high_school_above
@@ -91,3 +95,9 @@ class Statistical:
     def merge_temperature(self, temperature: float):
         # 增加气温数据
         self.temperature = temperature
+
+    def merge_covid(self, case, cure, die):
+        # 累计确诊 累计治愈 累计死亡
+        self.case = case
+        self.cure = cure
+        self.die = die

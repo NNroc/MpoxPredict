@@ -204,9 +204,34 @@ for year, province_code, province, city_code, city, sun in data_sun_df:
             sta.merge_sun(sun)
             break
 
+# 增加COVID-19数据
+data_covid_filename = '../data_original/COVID-19逐日统计.csv'
+data_covid_df = pd.read_csv(data_covid_filename, encoding='gbk')
+data_covid_df = data_covid_df.values
+for idx, province, city, city_code, date, x1, x2, x3, x4, x5, x6, case, cure, die in data_covid_df:
+    if date != '2022.12.06':
+        continue
+    for sta in all_statistical_data:
+        if sta.city == city:
+            sta.merge_covid(case, cure, die)
+            break
+
+# covid-19 经查询修整的数据
+# data_covid19_save_filename = 'data_covid19.csv'
+# with open(data_covid19_save_filename, 'w', encoding='gbk') as f:
+#     f.writelines('年份,城市,累计确诊,累计治愈,累计死亡\n')
+#     for statistical_data in all_statistical_data:
+#         f.writelines(
+#             str(statistical_data.year) + ','
+#             + str(statistical_data.city) + ','
+#             + str(statistical_data.case) + ','
+#             + str(statistical_data.cure) + ','
+#             + str(statistical_data.die)
+#             + '\n')
+
 with open(data_save_filename, 'w', encoding='gbk') as f:
     f.writelines(
-        '年份,城市,城镇常住人口(市辖区),建成区面积（平方公里）市辖区,居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人),高中及以上比例(%),年龄0到19比例(%),年龄20到39比例(%),年龄60以上比例(%),同性恋人数,城市降水量数据,城市年度日照时数,城市逐年气温\n')
+        '年份,城市,城镇常住人口(市辖区),建成区面积（平方公里）市辖区,居住用地面积,公园绿地面积,建成区绿化覆盖率(%),工业颗粒物排放量(吨),工业二氧化硫排放量(吨),工业氮氧化物排放量(吨),细颗粒物年平均浓度(微克/立方米),人均地区生产总值(元)全市,医院数(个)全市,医院数(个)市辖区,医院床位数(张)全市,医院床位数(张)市辖区,执业(助理)医师数(人)全市,执业(助理)医师数(人)市辖区,职工基本医疗保险参保人数全市,境内公路总里程(公里)全市,年末实有公共汽（电）车营运车辆数（辆）,全年公共汽(电)车客运总量(万人次),年末实有巡游出租汽车营运车数（辆）,公路客运量(万人),高中及以上比例(%),年龄0到19比例(%),年龄20到39比例(%),年龄60以上比例(%),同性恋人数,城市降水量数据,城市年度日照时数,城市逐年气温,covid-19 累计确诊,covid-19 累计治愈,covid-19 累计死亡\n')
     for statistical_data in all_statistical_data:
         f.writelines(
             str(statistical_data.year) + ','
@@ -240,5 +265,8 @@ with open(data_save_filename, 'w', encoding='gbk') as f:
             + str(int(statistical_data.homosexuality)) + ','
             + str(statistical_data.water) + ','
             + str(statistical_data.sun) + ','
-            + str(statistical_data.temperature)
+            + str(statistical_data.temperature) + ','
+            + str(statistical_data.case) + ','
+            + str(statistical_data.cure) + ','
+            + str(statistical_data.die)
             + '\n')
