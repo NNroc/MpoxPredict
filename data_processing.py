@@ -1,8 +1,15 @@
+import math
+
 import pandas as pd
 import datetime
 
 data_mpox_global_actual_cases_week_path = 'mpox/mpox_data/mpox_global_actual_cases_week.csv'
 data_flight_global_week_path = 'data_original/20230221 数据整理(军事医学研究院)英文版.xlsx'
+data_departures_path = 'data_original/副本出入境人数.xlsx'
+
+# departures
+data_departures_df = pd.read_excel(data_departures_path, sheet_name=0)
+data_departures_df = data_departures_df.values
 
 # mpox 实际新增患病
 data_mpox_actual_cases_week_df = pd.read_csv(data_mpox_global_actual_cases_week_path, header=None)
@@ -26,6 +33,10 @@ data_flight_global_week = dict()
 # 出入境航司 所涉及的国内城市
 data_all_city_internal = [i for i in data_flight_global_week_df[0]]
 data_all_city_internal = data_all_city_internal[5:]
+# 各国家出境人次
+data_departures = dict()
+for country, departures, x1, x2, x3, x4, x5, x6, x7, x8, x9 in data_departures_df:
+    data_departures[country] = float(departures)
 
 for city_name in data_all_city_external:
     data_mpox_actual_cases_week[city_name] = dict()
@@ -71,9 +82,11 @@ for flight_idx in data_flight_global_week:
             continue
         for country in data_flight_global_week[flight_idx][date]:
             if country in data_mpox_actual_cases_week:
-                flight_num = data_flight_global_week[flight_idx][date][country]
-                actual_num = int(data_mpox_actual_cases_week[country][date])
-                sum += flight_num * actual_num
+                flight_num = float(data_flight_global_week[flight_idx][date][country])
+                actual_num = float(data_mpox_actual_cases_week[country][date])
+                departure_num = data_departures[country]
+                # departure_num = 1
+                sum += flight_num * actual_num / departure_num
         data_risk_matrix[flight_idx][date] = sum
 
 # 风险矩阵保存位置
@@ -86,8 +99,9 @@ with open(data_risk_matrix_save_filename, 'w', encoding='gbk') as f:
     for date in data_date:
         date_str = str(date)
         for city in data_risk_matrix:
-            if date in data_risk_matrix[city]:
-                date_str = date_str + ',' + str(data_risk_matrix[city][date])
+            if date in data_risk_matrix[city] and data_risk_matrix[city][date] != 0.0 and math.log10(
+                    data_risk_matrix[city][date] * 10000) > 0:
+                date_str = date_str + ',' + str(math.log10(data_risk_matrix[city][date] * 10000))
             else:
                 date_str = date_str + ',0'
         f.writelines(date_str + '\n')
