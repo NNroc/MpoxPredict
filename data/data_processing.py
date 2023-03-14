@@ -10,25 +10,12 @@ def getAllFiles(targetDir):
     return listFiles
 
 
-data_flight_filename = '../data_original/20230221 数据整理(军事医学研究院).xlsx'
-data_flight_save_filename = 'data_flight.csv'
-
 # 出现的所有城市名字
 all_city_name = []
 # 出现的所有时间序列名字
 all_date_series = []
 # 合并的航班数据
 data_flight = dict()
-
-# 获取 xlsx
-df1 = pd.read_excel(data_flight_filename, sheet_name='Sheet1', keep_default_na=False)
-data = df1.values
-for row in data:
-    if row[0] not in all_date_series:
-        all_date_series.append(row[0])
-    if row[1] not in all_city_name:
-        all_city_name.append(row[1])
-    data_flight[row[0]] = row[2] + row[3]
 
 # 根据城市名排序
 all_city_name.sort()
@@ -41,10 +28,21 @@ data_city_size_save_filename = 'data_city_size.csv'
 data_city_size = dict()
 # 未筛查到的城市
 city_not_have = list.copy(all_city_name)
-# 航班信息
-data_flight_filename = ''
-# 航班信息保存文件
-data_flight_save_filename = 'data_flight.csv'
+
+# # 航班信息
+# data_flight_filename = ''
+# # 航班信息保存文件
+# data_flight_save_filename = 'data_flight.csv'
+
+# 获取航班数据 xlsx
+# df1 = pd.read_excel(data_flight_filename, sheet_name='Sheet1', keep_default_na=False)
+# data = df1.values
+# for row in data:
+#     if row[0] not in all_date_series:
+#         all_date_series.append(row[0])
+#     if row[1] not in all_city_name:
+#         all_city_name.append(row[1])
+#     data_flight[row[0]] = row[2] + row[3]
 
 # 读取sheet列表的元素
 df = pd.read_excel(data_city_size_filename, sheet_name='all', keep_default_na=False)

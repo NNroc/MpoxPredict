@@ -5,7 +5,7 @@ import datetime
 
 data_mpox_global_actual_cases_week_path = 'mpox/mpox_data/mpox_global_actual_cases_week.csv'
 data_flight_global_week_path = 'data_original/20230221 数据整理(军事医学研究院)英文版.xlsx'
-data_departures_path = 'data_original/副本出入境人数.xlsx'
+data_departures_path = 'data_original/出入境人数.xlsx'
 
 # departures
 data_departures_df = pd.read_excel(data_departures_path, sheet_name=0)
