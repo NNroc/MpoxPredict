@@ -19,8 +19,10 @@ data_mpox_actual_cases_week_df = data_mpox_actual_cases_week_df.values
 data_flight_global_week_df = pd.read_excel(data_flight_global_week_path, sheet_name=0, header=None)
 data_flight_global_week_df = data_flight_global_week_df.values
 
-# 风险矩阵（以 出入境航司 为基准）
-data_risk_matrix = dict()
+# 输入风险矩阵（以 出入境航司 为基准）
+data_input_risk_matrix = dict()
+# 输出风险矩阵（以 出入境航司 为基准）
+data_output_risk_matrix = dict()
 # 时间序列
 data_date = []
 # mpox 实际新增患病
@@ -35,7 +37,7 @@ data_all_city_internal = [i for i in data_flight_global_week_df[0]]
 data_all_city_internal = data_all_city_internal[5:]
 # 各国家出境人次
 data_departures = dict()
-for country, departures, x1, x2, x3, x4, x5, x6, x7, x8, x9 in data_departures_df:
+for country,x0, departures, x1, x2, x3, x4, x5, x6, x7, x8, x9 in data_departures_df:
     data_departures[country] = float(departures)
 
 for city_name in data_all_city_external:
@@ -53,13 +55,19 @@ for row in range(1, len(data_mpox_actual_cases_week_df)):
         data_mpox_actual_cases_week[data_all_city_external[idx - 1]][date] = \
             data_mpox_actual_cases_week_df[row][idx]
 
+for idx in range(5,len(data_all_city_internal) + 5):
+    country_name=data_flight_global_week_df[0][idx]
+    data_output_risk_matrix[country_name] = dict()
+    data_output_risk_matrix[country_name]['end_date']='2022/2/12'
+    data_output_risk_matrix[country_name]['risk']=0.0
+
 for row in range(1, len(data_flight_global_week_df)):
     for idx in range(5, len(data_all_city_internal) + 5):
         # 中国的城市名称
         city_name = data_flight_global_week_df[row][1]
         if city_name not in data_flight_global_week:
             data_flight_global_week[city_name] = dict()
-            data_risk_matrix[city_name] = dict()
+            data_input_risk_matrix[city_name] = dict()
         date = data_flight_global_week_df[row][0]
         date = date.split(' ')[2]
         date = date.replace('/', '-')
@@ -67,7 +75,7 @@ for row in range(1, len(data_flight_global_week_df)):
         date = date.strftime('%Y-%m-%d')
         if date not in data_flight_global_week[city_name]:
             data_flight_global_week[city_name][date] = dict()
-            data_risk_matrix[city_name][date] = dict()
+            data_input_risk_matrix[city_name][date] = dict()
         # 对应 (时间, 人数)
         data_flight_global_week[city_name][date][data_all_city_internal[idx - 5]] = \
             data_flight_global_week_df[row][idx]
@@ -87,21 +95,39 @@ for flight_idx in data_flight_global_week:
                 departure_num = data_departures[country]
                 # departure_num = 1
                 sum += flight_num * actual_num / departure_num
-        data_risk_matrix[flight_idx][date] = sum
+        data_input_risk_matrix[flight_idx][date] = sum
 
-# 风险矩阵保存位置
-data_risk_matrix_save_filename = 'risk_matrix.csv'
-with open(data_risk_matrix_save_filename, 'w', encoding='gbk') as f:
+
+# 外国输入中国的输入城市风险矩阵保存位置
+data_input_risk_matrix_save_filename = 'input_risk_matrix.csv'
+with open(data_input_risk_matrix_save_filename, 'w', encoding='gbk') as f:
     row_str = '风险矩阵'
-    for city in data_risk_matrix:
+    for city in data_input_risk_matrix:
         row_str = row_str + ',' + city
     f.writelines(row_str + '\n')
     for date in data_date:
         date_str = str(date)
-        for city in data_risk_matrix:
-            if date in data_risk_matrix[city] and data_risk_matrix[city][date] != 0.0 and math.log10(
-                    data_risk_matrix[city][date] * 10000) > 0:
-                date_str = date_str + ',' + str(math.log10(data_risk_matrix[city][date] * 10000))
+        for city in data_input_risk_matrix:
+            if date in data_input_risk_matrix[city] and data_input_risk_matrix[city][date] != 0.0 and math.log10(
+                    data_input_risk_matrix[city][date] * 10000) > 0:
+                date_str = date_str + ',' + str(math.log10(data_input_risk_matrix[city][date] * 10000))
+            else:
+                date_str = date_str + ',0'
+        f.writelines(date_str + '\n')
+
+# 外国输入中国的输出国家风险矩阵保存位置 todo 这里还没修改
+data_output_risk_matrix_save_filename = 'output_risk_matrix.csv'
+with open(data_output_risk_matrix_save_filename, 'w', encoding='gbk') as f:
+    row_str = '风险矩阵'
+    for city in data_input_risk_matrix:
+        row_str = row_str + ',' + city
+    f.writelines(row_str + '\n')
+    for date in data_date:
+        date_str = str(date)
+        for city in data_input_risk_matrix:
+            if date in data_input_risk_matrix[city] and data_input_risk_matrix[city][date] != 0.0 and math.log10(
+                    data_input_risk_matrix[city][date] * 10000) > 0:
+                date_str = date_str + ',' + str(math.log10(data_input_risk_matrix[city][date] * 10000))
             else:
                 date_str = date_str + ',0'
         f.writelines(date_str + '\n')
