@@ -97,6 +97,9 @@ for flight_idx in data_flight_global_week:
                 sum += flight_num * actual_num / departure_num
         data_input_risk_matrix[flight_idx][date] = sum
 
+# 某年某月：国家航班人数*国家实际病例人数
+# 累加以后除以该国家入境人数
+
 
 # 外国输入中国的输入城市风险矩阵保存位置
 data_input_risk_matrix_save_filename = 'input_risk_matrix.csv'
