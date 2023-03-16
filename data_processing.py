@@ -74,14 +74,20 @@ for row in range(1, len(data_flight_global_week_df)):
         data_flight_global_week[city_name][date][data_all_city_internal[country_idx - 5]] = \
             data_flight_global_week_df[row][country_idx]
 
+
+# 定义输出风险实体
+class output_risk:
+    def __init__(self, end_date='2022/2/12', risk=0.0):
+        self.end_date = end_date
+        self.risk = risk
+        self.date_risk = dict()
+        for date in data_date:
+            self.date_risk[date] = 0.0
+
+
 for country_idx in range(5, len(data_all_city_internal) + 5):
     country_name = data_flight_global_week_df[0][country_idx]
-    data_output_risk_matrix[country_name] = dict()
-    data_output_risk_matrix[country_name]['end_date'] = '2022/2/12'
-    data_output_risk_matrix[country_name]['risk'] = 0.0
-    data_output_risk_matrix[country_name]['date_risk'] = dict()
-    for date in data_date:
-        data_output_risk_matrix[country_name]['date_risk'][date] = 0.0
+    data_output_risk_matrix[country_name] = output_risk()
 
 # 计算输入风险矩阵
 # 航班中各城市对应各国的航班*各国家的猴痘患病人数
@@ -113,13 +119,15 @@ for row in range(1, len(data_flight_global_week_df)):
         date = datetime.datetime.strptime(date, "%Y-%m-%d")
         date = date.strftime('%Y-%m-%d')
         country_name = data_flight_global_week_df[0][country_idx]
-        if country_name in data_mpox_actual_cases_week and date <= data_output_risk_matrix[country_name]['end_date']:
-            data_output_risk_matrix[country_name]['date_risk'][date] = \
-                data_output_risk_matrix[country_name]['date_risk'][date] + float(
+        if country_name in data_mpox_actual_cases_week and date <= data_output_risk_matrix[country_name].end_date:
+            data_output_risk_matrix[country_name].date_risk[date] = \
+                data_output_risk_matrix[country_name].date_risk[date] + float(
                     data_flight_global_week_df[row][country_idx]) * float(
                     data_mpox_actual_cases_week[country_name][date]) / data_departures[country_name]
-            data_output_risk_matrix[country_name]['risk'] = data_output_risk_matrix[country_name]['risk'] + \
-                                                            data_output_risk_matrix[country_name]['date_risk'][date]
+            data_output_risk_matrix[country_name].risk = data_output_risk_matrix[country_name].risk + \
+                                                         data_output_risk_matrix[country_name].date_risk[date]
+
+data_output_risk_matrix = sorted(data_output_risk_matrix.items(), key=lambda x: x[1].risk, reverse=True)
 
 # 外国输入中国的输入城市风险矩阵保存位置
 data_input_risk_matrix_save_filename = 'input_risk_matrix.csv'
@@ -142,10 +150,10 @@ with open(data_input_risk_matrix_save_filename, 'w', encoding='gbk') as f:
 data_output_risk_matrix_save_filename = 'output_risk_matrix.csv'
 with open(data_output_risk_matrix_save_filename, 'w', encoding='gbk') as f:
     row_str = '风险矩阵'
-    for country_name in data_output_risk_matrix:
-        row_str = row_str + ',' + country_name
+    for country in data_output_risk_matrix:
+        row_str = row_str + ',' + country[0]
     f.writelines(row_str + '\n')
     row_str = '输出风险'
-    for country_name in data_output_risk_matrix:
-        row_str = row_str + ',' + str(data_output_risk_matrix[country_name]['risk'])
+    for country in data_output_risk_matrix:
+        row_str = row_str + ',' + str(country[1].risk)
     f.writelines(row_str + '\n')
