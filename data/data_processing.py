@@ -161,7 +161,7 @@ for s in all_statistical_data:
 data_temperature_filename = '../data_original/2000-2020年分市逐年气温'
 files = getAllFiles(data_temperature_filename)
 for file in files:
-    # 年份	省份	城市	城市代码	平均气温
+    # 年份 省份 城市 城市代码 平均气温
     data_temperature_df = pd.read_excel(data_temperature_filename + '/' + file, sheet_name=0, keep_default_na=False)
     data_temperature_df = data_temperature_df.values
     for year, province, city, city_code, temperature in data_temperature_df:
