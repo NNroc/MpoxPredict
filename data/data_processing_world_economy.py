@@ -48,9 +48,9 @@ with open(data_world_economy_save_filename, 'w', encoding='gbk') as f:
             if value_name == country_dict[country_name].sheet_list_name[country_value_num]:
                 country_str = country_str + ',' + str(country_dict[country_name].sheet_list_value[country_value_num])
                 country_value_num = country_value_num + 1
-                if country_value_num > len(value_name_list):
+                if country_value_num >= len(country_dict[country_name].sheet_list_name):
                     break
             else:
                 country_str = country_str + ',' + 'NULL'
-        print(country_str)
+        # print(country_str)
         f.writelines(country_str + '\n')
