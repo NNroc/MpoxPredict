@@ -1,5 +1,5 @@
 class WorldEconomy:
-    def __init__(self, country_name):
+    def __init__(self, country_name=None):
         self.country_name = country_name
         self.sheet_list_name = []
         self.sheet_list_value = []

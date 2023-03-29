@@ -17,21 +17,38 @@ value_name_list = []
 data_world_economy_dir = '../data_original/世界各国社经'
 files = getAllFiles(data_world_economy_dir)
 for file in files:
-    sheet = pd.read_excel(data_world_economy_dir + '/' + file, sheet_name=None)
-    sheet_list = list(sheet.keys())
-    for sheet_name in sheet_list:
-        data_world_economy_df = pd.read_excel(data_world_economy_dir + '/' + file, sheet_name=sheet_name,
-                                              keep_default_na=False, header=None, usecols='A,B')
-        data_world_economy_df = data_world_economy_df.values
-        value_name = data_world_economy_df[0][1]
-        value_name_list.append(value_name)
-        for country_name, value in data_world_economy_df:
-            if country_name == '国家':
-                continue
+    data_world_economy_df = pd.read_csv(data_world_economy_dir + '/' + file, keep_default_na=False, header=None)
+    data_world_economy_df = data_world_economy_df.values
+    row_num = data_world_economy_df.shape[0]
+    col_num = data_world_economy_df.shape[1]
+    value_name_list_this = []
+    need_to_append = WorldEconomy()
+    for i in range(2, col_num):
+        value_name_list.append(data_world_economy_df[0][i])
+        value_name_list_this.append(data_world_economy_df[0][i])
+        need_to_append.sheet_list_name.append(data_world_economy_df[0][i])
+    for indx in range(1, row_num):
+        use_flag = True
+        for i in range(2, col_num):
+            if data_world_economy_df[indx][i] is None:
+                use_flag = False
+                break
+        # 如果相等就更新，反之写入country_dict中
+        if (need_to_append.country_name == None or need_to_append.country_name == data_world_economy_df[indx][0]) \
+                and use_flag:
+            need_to_append.country_name = data_world_economy_df[indx][0]
+            need_to_append.sheet_list_value = []
+            for i in range(2, col_num):
+                need_to_append.sheet_list_value.append(data_world_economy_df[indx][0])
+        elif need_to_append.country_name != None and need_to_append.country_name != data_world_economy_df[indx][0]:
+            country_name = data_world_economy_df[indx][0]
             if country_name not in country_dict:
                 country_dict[country_name] = WorldEconomy(country_name)
-            country_dict[country_name].sheet_list_name.append(value_name)
-            country_dict[country_name].sheet_list_value.append(value)
+            for i in range(2, col_num):
+                country_dict[country_name].sheet_list_name.append(value_name_list_this[i - 2])
+                country_dict[country_name].sheet_list_value.append(data_world_economy_df[indx][i])
+            # 初始化
+            need_to_append = WorldEconomy()
 
 # 保存目录
 data_world_economy_save_filename = 'data_world_economy.csv'
