@@ -37,27 +37,40 @@ for file in files:
         if (need_to_append.country_name == None or need_to_append.country_name == data_world_economy_df[indx][0]) \
                 and use_flag:
             need_to_append.country_name = data_world_economy_df[indx][0]
+            need_to_append.year = data_world_economy_df[indx][1]
             need_to_append.sheet_list_value = []
             for i in range(2, col_num):
-                need_to_append.sheet_list_value.append(data_world_economy_df[indx][0])
+                need_to_append.sheet_list_value.append(data_world_economy_df[indx][i])
         elif need_to_append.country_name != None and need_to_append.country_name != data_world_economy_df[indx][0]:
-            country_name = data_world_economy_df[indx][0]
+            country_name = need_to_append.country_name
             if country_name not in country_dict:
                 country_dict[country_name] = WorldEconomy(country_name)
             for i in range(2, col_num):
                 country_dict[country_name].sheet_list_name.append(value_name_list_this[i - 2])
-                country_dict[country_name].sheet_list_value.append(data_world_economy_df[indx][i])
+                country_dict[country_name].sheet_list_value.append(need_to_append.sheet_list_value[i - 2])
             # 初始化
             need_to_append = WorldEconomy()
+            indx = indx - 1
+    if need_to_append.country_name != None:
+        country_name = need_to_append.country_name
+        if country_name not in country_dict:
+            country_dict[country_name] = WorldEconomy(country_name)
+        for i in range(2, col_num):
+            country_dict[country_name].sheet_list_name.append(value_name_list_this[i - 2])
+            country_dict[country_name].sheet_list_value.append(need_to_append.sheet_list_value[i - 2])
+        # 初始化
+        need_to_append = WorldEconomy()
 
 # 保存目录
 data_world_economy_save_filename = 'data_world_economy.csv'
+# 设置填充符
+fill_str = ''
 # 保存预测结果
 with open(data_world_economy_save_filename, 'w', encoding='gbk') as f:
-    country_str = '国家'
+    world_economy_str = 'Country'
     for value_name in value_name_list:
-        country_str = country_str + ',' + value_name
-    f.writelines(country_str + '\n')
+        world_economy_str = world_economy_str + ',' + "\"" + value_name + "\""
+    f.writelines(world_economy_str + '\n')
     for country_name in country_dict:
         country_str = country_name
         country_value_num = 0
@@ -68,6 +81,5 @@ with open(data_world_economy_save_filename, 'w', encoding='gbk') as f:
                 if country_value_num >= len(country_dict[country_name].sheet_list_name):
                     break
             else:
-                country_str = country_str + ',' + 'NULL'
-        # print(country_str)
+                country_str = country_str + ',' + fill_str
         f.writelines(country_str + '\n')
