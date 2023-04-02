@@ -17,7 +17,8 @@ value_name_list = []
 data_world_economy_dir = '../data_original/世界各国社经'
 files = getAllFiles(data_world_economy_dir)
 for file in files:
-    data_world_economy_df = pd.read_csv(data_world_economy_dir + '/' + file, keep_default_na=False, header=None)
+    data_world_economy_df = pd.read_csv(data_world_economy_dir + '/' + file, keep_default_na=False, header=None,encoding='gbk')
+    print(file)
     data_world_economy_df = data_world_economy_df.values
     row_num = data_world_economy_df.shape[0]
     col_num = data_world_economy_df.shape[1]
