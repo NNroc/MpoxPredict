@@ -13,12 +13,20 @@ def getAllFiles(targetDir):
 country_dict = dict()
 # 各城市所拥有的元素
 value_name_list = []
+# 所需要的国家
+need_country_name = ['Argentina', 'Austria', 'Belgium', 'Bolivia', 'Brazil', 'Canada', 'Chile', 'Colombia',
+                     'Costa Rica', 'Czechia', 'Democratic Republic of Congo', 'Denmark', 'Dominican Republic',
+                     'Ecuador', 'El Salvador', 'France', 'Germany', 'Ghana', 'Greece', 'Guatemala', 'Hungary',
+                     'Ireland', 'Israel', 'Italy', 'Luxembourg', 'Mexico', 'Netherlands', 'Nigeria', 'Norway', 'Panama',
+                     'Paraguay', 'Peru', 'Poland', 'Portugal', 'Puerto Rico', 'Spain', 'Sweden', 'Switzerland',
+                     'United Kingdom', 'United States']
 
 data_world_economy_dir = '../data_original/世界各国社经'
 files = getAllFiles(data_world_economy_dir)
 for file in files:
-    data_world_economy_df = pd.read_csv(data_world_economy_dir + '/' + file, keep_default_na=False, header=None,encoding='gbk')
-    print(file)
+    data_world_economy_df = pd.read_csv(data_world_economy_dir + '/' + file, keep_default_na=False, header=None,
+                                        encoding='gbk', low_memory=False)
+    # print(file)
     data_world_economy_df = data_world_economy_df.values
     row_num = data_world_economy_df.shape[0]
     col_num = data_world_economy_df.shape[1]
@@ -73,6 +81,8 @@ with open(data_world_economy_save_filename, 'w', encoding='gbk') as f:
         world_economy_str = world_economy_str + ',' + "\"" + value_name + "\""
     f.writelines(world_economy_str + '\n')
     for country_name in country_dict:
+        if country_name not in need_country_name:
+            continue
         country_str = country_name
         country_value_num = 0
         for value_name in value_name_list:
