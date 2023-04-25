@@ -3,6 +3,8 @@ import os
 from data.entity.WorldEconomy import WorldEconomy
 
 
+# 处理世界各国经济数据
+
 # os.listdir()方法获取文件夹名字，返回数组
 def getAllFiles(targetDir):
     listFiles = os.listdir(targetDir)
